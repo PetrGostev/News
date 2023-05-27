@@ -42,7 +42,7 @@ fun SplashScreen( onClickNavigationToNews: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.splash), contentDescription = "",
+            painter = painterResource(id = R.drawable.news), contentDescription = "",
             modifier = Modifier
                 .scale(scale.value)
         )

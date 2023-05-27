@@ -1,2 +1,2 @@
 # News
- To view the news
+ to view the news
