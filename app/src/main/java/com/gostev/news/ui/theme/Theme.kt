@@ -1,20 +1,18 @@
+@file:Suppress("DEPRECATION")
+
 package com.gostev.news.ui.theme
 
 import android.app.Activity
-import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.Colors
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
-import androidx.compose.material.MaterialTheme as MaterialTheme1
 
 private val DarkColorScheme = darkColors(
     primary = Purple80,
@@ -45,8 +43,7 @@ fun NewsTheme(
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) darkColors() else lightColors()
+            if (darkTheme) DarkColorScheme else LightColorScheme
         }
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
@@ -54,7 +51,7 @@ fun NewsTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
+            (view.context as Activity).window.statusBarColor = Purple40.toArgb()
             ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
         }
     }

@@ -1,16 +1,15 @@
 package com.gostev.news.presentation.news.view
 
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.gostev.news.R
 import com.gostev.news.presentation.news.NewsViewModel
 import com.gostev.news.views.NewsBottomBar
+import com.gostev.news.views.YoTopAppBar
 
 @Composable
 fun NewsScreen(
@@ -23,15 +22,7 @@ fun NewsScreen(
     Scaffold(
         modifier = Modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "News",
-                        color = Color.Black,
-                        fontSize = 22.sp
-                    )
-                },
-            )
+            YoTopAppBar(stringResource(id = R.string.app_name))
         },
         bottomBar = {
             if (currentRoute != null) {

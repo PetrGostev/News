@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NewsRepository @Inject constructor(
-    private val newsService: NewsApi,
+    private val newsApi: NewsApi,
     private val articleDao: ArticleDao
 ) {
 
@@ -24,10 +24,10 @@ class NewsRepository @Inject constructor(
     ).flow
 
     suspend fun getPageNews(page: Int): NewsResponse =
-        newsService.getHeadLines(page = page)
+        newsApi.getHeadLines(page = page)
 
     suspend fun searchNews(queryString: String): NewsResponse =
-        newsService.getEverything(queryString,page = 1)
+        newsApi.getEverything(queryString,page = 1)
 
     suspend fun getFavoriteArticles() =  withContext(Dispatchers.IO) {articleDao.getArticles()}
 
