@@ -31,52 +31,56 @@ fun FavoriteArticleView(
     onClickItem: (article: Article) -> Unit,
     onClickDeleteFavorite: () -> Unit,
 ) {
-    Column() {
-        Row(
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 26.dp)
+    ) {
+        val context = LocalContext.current
+        AsyncImage(
+            model = article.urlToImage,
+//            model =  R.drawable.no_photography,
+            contentDescription = stringResource(id = R.string.image),
+            placeholder = painterResource(id = R.drawable.no_photography),
+            error = painterResource(id = R.drawable.no_photography),
+            contentScale = ContentScale.FillWidth,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-        ) {
-            val context = LocalContext.current
-            AsyncImage(
-                model = article.urlToImage,
-                contentDescription = stringResource(id = R.string.image),
-                placeholder = painterResource(id = R.drawable.no_photography),
-                error = painterResource(id = R.drawable.no_photography),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(130.dp)
-                    .clip(RoundedCornerShape(10.dp)),
+                .width(400.dp)
+//                .fillMaxWidth()
+                .height(180.dp)
+                .clip(RoundedCornerShape(10.dp)),
+        )
+        Text(text = article.title ?: "",
+            modifier = Modifier.padding(top = 4.dp),)
+        Text(
+            text = DateFormat().stringDateToString(article.publishedAt, context),
+            modifier = Modifier.padding(vertical = 4.dp),
+            fontSize = 12.sp,
+            color = Color.Gray
+        )
+
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = stringResource(id = R.string.more_detailed),
+                modifier = Modifier
+                    .clickable { onClickItem.invoke(article) }
+                    .weight(1f),
+                fontSize = 15.sp,
+                color = colorResource(id = R.color.orange_20)
             )
-            Column(modifier = Modifier.padding(start = 8.dp)) {
-                Text(text = article.title ?: "")
-                Text(
-                    text = DateFormat().stringDateToString(article.publishedAt, context),
-                    modifier = Modifier.padding(top = 4.dp),
-                    fontSize = 12.sp,
-                    color = Color.Gray
-                )
-
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = stringResource(id = R.string.more_detailed),
-                            modifier = Modifier.clickable { onClickItem.invoke(article) }
-                                .weight(1f),
-                            fontSize = 15.sp,
-                            color = colorResource(id = R.color.orange_20)
-                        )
-                        Icon(
-                            painter = painterResource(id = R.drawable.delete),
-                            contentDescription = "",
-                            modifier = Modifier.clickable {
-                                onClickDeleteFavorite.invoke()
-                            }
-                        )
-
+            Icon(
+                painter = painterResource(id = R.drawable.delete),
+                contentDescription = "",
+                modifier = Modifier.clickable {
+                    onClickDeleteFavorite.invoke()
                 }
-            }
+            )
+
         }
-        Divider(modifier = Modifier.padding(horizontal = 16.dp))
     }
+    Divider(
+//        modifier = Modifier.padding(horizontal = 16.dp)
+    )
 }
 
 @Preview
