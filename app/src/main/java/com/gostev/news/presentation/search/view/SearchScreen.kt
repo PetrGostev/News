@@ -15,6 +15,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.gostev.news.R
 import com.gostev.news.data.api.response.Article
 import com.gostev.news.presentation.search.SearchViewModel
+import com.gostev.news.presentation.search.data.SearchNewsEvent
 import com.gostev.news.views.*
 
 
@@ -25,7 +26,6 @@ fun SearchScreen(
     onClickItem: (article: Article) -> Unit,
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
-    val queryTextState by viewModel.queryTextState.collectAsStateWithLifecycle()
     val searchNewsState by viewModel.searchNewsState.collectAsStateWithLifecycle()
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = searchNewsState.loading)
 
@@ -35,9 +35,9 @@ fun SearchScreen(
             TopAppBar(
                 title = {},
                 actions = {
-                    SearchView(queryTextState.submittedText,
-                        onValueChange = { viewModel.onQueryTextChange(it) },
-                        onClearClick = { viewModel.onQueryTextChange("") })
+                    SearchView(searchNewsState.submittedText,
+                        onValueChange = { viewModel.send(SearchNewsEvent.SearchEvent(query = it)) },
+                        onClearClick = { viewModel.send(SearchNewsEvent.SearchEvent(query = "")) })
                 }
             )
         },
@@ -57,7 +57,7 @@ fun SearchScreen(
                     onDismiss = {},
                     onPositiveClick = {},
                     title = stringResource(id = R.string.error_title),
-                    text = searchNewsState.message?:"",
+                    text = searchNewsState.message ?: "",
                     textButton = stringResource(id = R.string.ok)
                 )
             }
@@ -70,9 +70,9 @@ fun SearchScreen(
                     .padding(padding)
             ) {
                 SearchArticleListView(searchNewsState.news,
-                    {onClickItem.invoke(it)},
+                    { onClickItem.invoke(it) },
                     { article ->
-                        viewModel.checkArticleFavorite(article)
+                        viewModel.send(SearchNewsEvent.FavoriteEvent(article = article))
                     })
             }
         })
