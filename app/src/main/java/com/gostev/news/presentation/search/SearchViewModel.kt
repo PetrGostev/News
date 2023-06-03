@@ -17,7 +17,6 @@ private const val SUCCESS = "ok"
 @HiltViewModel
 class SearchViewModel @Inject constructor(private val repository: NewsRepository) : ViewModel() {
     val searchNewsState = MutableStateFlow(SearchNewsState())
-//    val queryTextState = MutableStateFlow(QueryTextState())
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         searchNewsState.update { value ->
