@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -20,14 +21,42 @@ import com.gostev.news.views.*
 
 
 @Composable
-fun SearchScreen(
+internal fun SearchScreen(
     currentRoute: String?,
     onClickBottomNavigation: (route: String) -> Unit,
     onClickItem: (article: Article) -> Unit,
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     val searchNewsState by viewModel.searchNewsState.collectAsStateWithLifecycle()
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = searchNewsState.loading)
+
+    SearchScreen(
+        currentRoute = currentRoute,
+        onClickBottomNavigation = onClickBottomNavigation,
+        onClickItem = onClickItem,
+        onQueryChange = { viewModel.send(SearchNewsEvent.SearchEvent(query = it)) },
+        onClickFavorite = { viewModel.send(SearchNewsEvent.FavoriteEvent(article = it)) },
+        loading = searchNewsState.loading,
+        submittedText = searchNewsState.submittedText,
+        error = searchNewsState.error,
+        message = searchNewsState.message,
+        news = searchNewsState.news,
+    )
+}
+
+@Composable
+private fun SearchScreen(
+    currentRoute: String?,
+    onClickBottomNavigation: (route: String) -> Unit,
+    onClickItem: (article: Article) -> Unit,
+    onQueryChange: (query: String) -> Unit,
+    onClickFavorite: (article: Article) -> Unit,
+    loading: Boolean,
+    submittedText: String,
+    error: Boolean,
+    message: String?,
+    news: List<Article>
+) {
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = loading)
 
     Scaffold(
         modifier = Modifier,
@@ -35,9 +64,9 @@ fun SearchScreen(
             TopAppBar(
                 title = {},
                 actions = {
-                    SearchView(searchNewsState.submittedText,
-                        onValueChange = { viewModel.send(SearchNewsEvent.SearchEvent(query = it)) },
-                        onClearClick = { viewModel.send(SearchNewsEvent.SearchEvent(query = "")) })
+                    SearchView(submittedText,
+                        onValueChange = { onQueryChange(it) },
+                        onClearClick = { onQueryChange("") })
                 }
             )
         },
@@ -52,12 +81,12 @@ fun SearchScreen(
         floatingActionButton = {},
 
         content = { padding ->
-            if (searchNewsState.error) {
+            if (error) {
                 MyDialog(
                     onDismiss = {},
                     onPositiveClick = {},
                     title = stringResource(id = R.string.error_title),
-                    text = searchNewsState.message ?: "",
+                    text = message ?: "",
                     textButton = stringResource(id = R.string.ok)
                 )
             }
@@ -69,11 +98,28 @@ fun SearchScreen(
                     .fillMaxSize()
                     .padding(padding)
             ) {
-                SearchArticleListView(searchNewsState.news,
+                SearchArticleListView(news,
                     { onClickItem.invoke(it) },
                     { article ->
-                        viewModel.send(SearchNewsEvent.FavoriteEvent(article = article))
+                        onClickFavorite(article)
                     })
             }
         })
+}
+
+@Preview(showSystemUi = true)
+@Composable
+private fun SearchScreenPreview() {
+    SearchScreen(
+        currentRoute = "",
+        onClickBottomNavigation = {},
+        onClickItem = {},
+        onQueryChange = {},
+        onClickFavorite = {},
+        loading = true,
+        submittedText = "search",
+        error = false,
+        message = "",
+        news = emptyList(),
+    )
 }

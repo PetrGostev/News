@@ -1,4 +1,4 @@
-package com.gostev.news.presentation.news
+package com.gostev.news.presentation.news.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

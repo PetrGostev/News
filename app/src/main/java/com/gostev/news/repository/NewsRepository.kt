@@ -7,7 +7,7 @@ import com.gostev.news.data.api.NewsApi
 import com.gostev.news.data.api.response.Article
 import com.gostev.news.data.api.response.NewsResponse
 import com.gostev.news.data.db.ArticleDao
-import com.gostev.news.presentation.news.NewsPagingSource
+import com.gostev.news.presentation.news.data.NewsPagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

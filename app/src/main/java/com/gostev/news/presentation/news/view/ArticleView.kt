@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,9 +39,8 @@ fun ArticleView(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 26.dp)
+            .padding(16.dp)
     ) {
-        val context = LocalContext.current
         if (isVisibleImage) {
             AsyncImage(
                 model = article.urlToImage,
@@ -61,7 +59,7 @@ fun ArticleView(
             modifier = Modifier.padding(top = 4.dp),
         )
         Text(
-            text = DateFormat().stringDateToString(article.publishedAt, context),
+            text = DateFormat().stringDateToString(article.publishedAt),
             modifier = Modifier.padding(vertical = 4.dp),
             fontSize = 12.sp,
             color = Color.Gray
@@ -89,10 +87,10 @@ fun ArticleView(
             }
         }
     }
-    Divider(modifier = Modifier.padding(horizontal = 16.dp))
+    Divider()
 }
 
-@Preview
+@Preview (showSystemUi = true)
 @Composable
 fun PreviewArticleView() {
     ArticleView(
