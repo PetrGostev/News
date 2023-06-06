@@ -17,9 +17,9 @@ import com.gostev.news.utils.FAVORITE_SCREEN
 import com.gostev.news.utils.NEWS_SCREEN
 import com.gostev.news.utils.SEARCH_SCREEN
 
-private const val NEWS = "News"
-private const val SEARCH = "Search"
-private const val FAVORITE = "Favorite"
+private const val NEWS = "Новости"
+private const val SEARCH = "Поиск"
+private const val FAVORITE = "Избранное"
 
 sealed class BottomItem(
     val title: String,

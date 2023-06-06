@@ -55,7 +55,7 @@ private fun FavoriteScreen(
     Scaffold(
         modifier = Modifier,
         topBar = {
-            YoTopAppBar("Favorite")
+            YoTopAppBar(stringResource(id = R.string.favorite))
         },
         bottomBar = {
             if (currentRoute != null) {
